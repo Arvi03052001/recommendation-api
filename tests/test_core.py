@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from core import filter_by_year
+from core import filter_by_year, filter_by_rating
 from data.movies import MOVIES
 
 
@@ -32,6 +32,18 @@ def test_3_empty_when_no_movies_that_year():
     result = filter_by_year(MOVIES, 1850)
     assert result == []
 
+def test_4_finds_highly_rated_movies():
+    result = filter_by_rating(MOVIES, 8.5)
+    assert len(result) == 13 
+
+
+def test_5_boundary_is_included():
+    result = filter_by_rating(MOVIES, 8.0)
+    titles = []
+    for m in result:
+        titles.append(m["title"])
+    assert "Dune" in titles, "exactly 8.0 should count - did you use >= ?"
+
 
 # ============================================
 if __name__ == "__main__":
@@ -39,6 +51,8 @@ if __name__ == "__main__":
         ("test 1  finds movies from 2017", test_1_finds_movies_from_2017),
         ("test 2  gives back whole movies", test_2_gives_back_whole_movies_not_titles),
         ("test 3  empty list when none found", test_3_empty_when_no_movies_that_year),
+        ("test 4  finds highly rated movies", test_4_finds_highly_rated_movies),
+        ("test 5  boundary 8.0 is included", test_5_boundary_is_included),
     ]
 
     passed = 0

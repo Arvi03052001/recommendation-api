@@ -30,3 +30,13 @@ def filter_by_year(movies, year):
         if movie["year"] == year:
             result.append(movie)
     return result
+
+def filter_by_rating(movies, min_rating):
+    """Give back the movies rated at least min_rating."""
+    # write your code here:
+    result = []
+    for movie in movies:
+        if movie["rating"] >= min_rating:
+            result.append(movie)
+    return result
+    
