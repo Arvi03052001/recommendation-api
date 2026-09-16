@@ -1,0 +1,1517 @@
+================================================================================
+        PYTHON DJANGO DEVELOPER - COMPLETE LEARNING ROADMAP
+        Project: Recommendation API (Netflix/Amazon-style)
+        Strategy: Learn Concept -> Apply to Project -> Ship to Production
+        Target: Zero Knowledge to 3-5 Years Interview-Ready
+================================================================================
+
+
+################################################################################
+PHASE 1 - PYTHON BASICS
+################################################################################
+
+1. Data Types & Memory Model
+---------------------------------
+- Primitive types: int, float, str, bool, NoneType, complex
+- Collections: list, tuple, set, frozenset, dict
+- Mutable vs Immutable (CRITICAL interview Q)
+- id(), reference counting, sys.getsizeof()
+- type(), isinstance(), issubclass()
+- Type conversion: int(), str(), list(), dict(), set(), tuple(), bool()
+- Truthiness: what's falsy (0, "", [], {}, None, False)
+- Project use: Store user ratings, movie metadata, category tags
+
+
+2. Operators & Control Flow
+---------------------------------
+- Arithmetic: + - * / // % **
+- Comparison: == != > < >= <=
+- Logical: and or not + short-circuit
+- is vs == (small int caching -5 to 256)
+- Bitwise: & | ^ ~ << >>
+- Membership: in, not in
+- Walrus operator :=
+- if / elif / else
+- Ternary: x if cond else y
+- for, while, nested loops
+- break, continue, pass
+- else clause on loops
+- range(), enumerate(), zip()
+- match-case (Python 3.10+)
+- sorted() vs list.sort()
+- Project use: Filter users by age, sort movies by rating
+
+
+3. Strings Deep Dive
+---------------------------------
+- Immutability
+- Slicing: s[start:stop:step], negative indexing, [::-1]
+- Methods: .split(), .join(), .strip(), .replace(), .find(), .count(),
+           .upper(), .lower(), .startswith(), .endswith(), .isdigit(), .zfill()
+- Formatting: %, .format(), f-strings
+- Raw strings r"..."
+- Multiline strings """..."""
+- Project use: Parse movie titles, clean user input, slugify URLs
+
+
+4. Functions Core
+---------------------------------
+- def, return (implicit None)
+- Positional args, default args
+- Mutable default trap: def f(a, lst=[])
+- *args, **kwargs
+- Keyword-only args: def f(a, *, b)
+- Positional-only args: def f(a, b, /)
+- Unpacking in calls: f(*[1,2]), f(**{'a':1})
+- Scope & LEGB Rule (Local -> Enclosing -> Global -> Built-in)
+- global, nonlocal
+- Closures
+- Project use: def recommend(user_id, top_n=10, **filters)
+
+
+5. Functional Python
+---------------------------------
+- lambda
+- map(), filter(), reduce()
+- any(), all()
+- Recursion (base case, recursion limit)
+- Type hints: def f(x: int) -> str:
+- Optional, List, Dict from typing
+- Project use: Filter movies, transform ratings, validate inputs
+
+
+6. Comprehensions
+---------------------------------
+- List comprehension: [x*2 for x in range(10)]
+- Dict comprehension: {k: v for k, v in pairs}
+- Set comprehension
+- Generator expression: (x*2 for x in range(10))
+- Nested comprehensions
+- When NOT to use comprehensions
+- Project use: Build user-movie rating matrix
+
+
+7. Iterators & Generators
+---------------------------------
+- Iterable vs Iterator (__iter__ vs __next__)
+- iter(), next(), StopIteration
+- Generator functions with yield
+- return vs yield
+- Lazy evaluation
+- yield from
+- itertools: chain, count, cycle, islice, combinations, permutations, product
+- Project use: Stream large rating datasets without loading into memory
+
+
+8. Error & Exception Handling
+---------------------------------
+- try / except / else / finally
+- Catching multiple exceptions
+- Order of except blocks (specific -> general)
+- except Exception as e
+- raise, re-raise
+- Custom exception classes
+- Common exceptions: ValueError, TypeError, KeyError, IndexError,
+                    AttributeError, FileNotFoundError
+- Project use: Handle missing user data, invalid ratings, API errors
+
+
+9. File Handling & Context Managers
+---------------------------------
+- open() modes: r, w, a, x, b, +
+- read(), readline(), readlines()
+- with open(...) as f: (auto-close)
+- Text vs binary mode
+- Encoding (utf-8)
+- csv module: reader, writer, DictReader
+- json: load, loads, dump, dumps
+- os.path: join, exists, basename, dirname
+- pathlib.Path (modern way - Django uses this)
+- Project use: Load movie dataset CSV, export recommendation results JSON
+
+
+10. Modules & Standard Library
+---------------------------------
+- Import system: import, from x import y, as, *
+- __name__ == "__main__"
+- Standard libs: os, sys, math, random, datetime, json, collections, re
+- pip, requirements.txt, venv
+- __init__.py, packages vs modules
+- Project use: Structure project as Python package
+
+
+
+#################################################################################
+PHASE 2 - OOP DEEP DIVE
+#################################################################################
+
+1. OOP Fundamentals
+---------------------------------
+- Class vs Object vs Instance
+- class keyword, __init__ constructor
+- Instance variables (self.x) vs class variables
+- self parameter - what it really is
+- cls parameter in classmethods
+- Creating and using objects
+- Project use: class User, class Movie, class Rating
+
+
+2. The Four Pillars of OOP
+---------------------------------
+- Encapsulation - bundling data + methods, access control
+- Inheritance - reusing parent class code
+- Polymorphism - same interface, different behavior
+- Abstraction - hiding complexity, exposing essentials
+- Project use: Movie -> TvShow, Movie -> Documentary
+
+
+3. Constructors & Initialization
+---------------------------------
+- __init__ - instance initializer
+- __new__ - the REAL constructor (creates instance)
+- __init__ vs __new__ (interview favorite)
+- Default arguments in __init__
+- super().__init__()
+- Multiple constructors using @classmethod
+- Project use: Movie(title, genre, year) with defaults
+
+
+4. Instance, Class & Static Methods
+---------------------------------
+- Instance method: def method(self)
+- Class method: @classmethod, takes cls
+- Static method: @staticmethod, no self/cls
+- When to use which
+- Factory patterns with classmethods
+- Project use: Movie.from_dict(data), Movie.is_valid_genre(g)
+
+
+5. Instance, Class & Static Variables
+---------------------------------
+- Instance variables (self.x) - per object
+- Class variables (ClassName.x) - shared
+- Mutable class variable trap
+- Project use: Movie.genres = ["action", "comedy"] shared across all
+
+
+6. Inheritance Deep Dive
+---------------------------------
+- Single, multiple, multilevel, hierarchical, hybrid inheritance
+- super() deep dive
+- Method Resolution Order (MRO) - C3 Linearization
+- Diamond Problem
+- Mixin pattern (Django uses heavily)
+- Abstract base classes as parents
+- Project use: RecommenderMixin shared by multiple recommender classes
+
+
+7. Polymorphism
+---------------------------------
+- Method overriding (runtime)
+- Method overloading (Python uses singledispatch)
+- Duck typing
+- Operator overloading via dunder methods
+- @functools.singledispatch
+- Project use: Different recommenders implement .recommend() differently
+
+
+8. Encapsulation & Access Control
+---------------------------------
+- public_var, _protected_var, __private_var (name mangling)
+- Name mangling: _ClassName__privateVar
+- @property - getter
+- @x.setter - setter
+- @x.deleter - deleter
+- Read-only properties
+- Computed properties
+- Project use: Movie.average_rating as computed property
+
+
+9. Magic / Dunder Methods (CRITICAL)
+---------------------------------
+- __init__, __new__
+- __str__ vs __repr__ (interview favorite)
+- __len__, __eq__, __ne__, __lt__, __gt__, __le__, __ge__
+- __hash__ - for dict keys & sets
+- __bool__ - truthiness
+- __call__ - make object callable
+- __getitem__, __setitem__
+- __iter__, __next__ - iteration protocol
+- __contains__ - in operator
+- __add__, __sub__, __mul__, __truediv__
+- __enter__, __exit__ - context managers
+- __class__, __dict__, __doc__, __module__
+- Project use: __str__ for Movie (human-readable), __repr__ for debugging
+
+
+10. Abstract Classes & Interfaces
+---------------------------------
+- abc module - from abc import ABC, abstractmethod
+- @abstractmethod
+- Cannot instantiate abstract class
+- Abstract properties
+- collections.abc - built-in ABCs (Iterable, Sequence, Mapping)
+- Project use: BaseRecommender(ABC) with abstract recommend() method
+
+
+11. Class Composition & Aggregation
+---------------------------------
+- "Has-a" vs "Is-a" relationship
+- Composition (strong ownership)
+- Aggregation (weak ownership)
+- "Favor composition over inheritance" principle
+- Project use: User has-a Watchlist, Movie has-a Genre
+
+
+12. Metaclasses (Concept-level)
+---------------------------------
+- Everything is an object, including classes
+- type is the metaclass of all classes
+- Custom metaclass via class Foo(metaclass=MyMeta)
+- Use cases: ORMs (Django models!)
+- __init_subclass__ - modern alternative
+- Project use: Understand how Django models work under the hood
+
+
+13. Decorators (Class-related)
+---------------------------------
+- @property, @staticmethod, @classmethod
+- Class decorators
+- Common Django decorators: @login_required, @api_view, @csrf_exempt
+- Project use: Apply @property for computed fields, @classmethod for factories
+
+
+14. Data Classes & Modern Python OOP
+---------------------------------
+- @dataclass (Python 3.7+)
+- Auto-generates __init__, __repr__, __eq__
+- field(default_factory=list) for mutable defaults
+- frozen=True for immutable
+- __post_init__ hook
+- Project use: @dataclass class Rating: user_id: int; movie_id: int; score: float
+
+
+15. Real-World OOP Patterns
+---------------------------------
+- Singleton Pattern - single instance (DB connection, config)
+- Factory Pattern - alternate constructors
+- Strategy Pattern - swap algorithms (content-based vs collaborative)
+- Observer Pattern - pub/sub events
+- Mixin Pattern - Django REST Framework uses heavily
+- Project use: Strategy pattern for switching recommendation algorithms
+
+
+
+#################################################################################
+PHASE 3 - DSA FOUNDATIONS
+#################################################################################
+
+1. Big-O Notation
+---------------------------------
+- Time & space complexity
+- O(1), O(log n), O(n), O(n log n), O(n^2), O(2^n), O(n!)
+- Best / Average / Worst case
+- Common Python operation complexities
+- How to analyze any function
+- Project use: Choose efficient algorithms for large movie datasets
+
+
+2. Arrays & Dynamic Arrays
+---------------------------------
+- Array vs List (Python list is dynamic array)
+- Traversal, insertion, deletion complexities
+- In-place operations
+- Array rotation
+- Two pointers technique
+- Sliding window (fixed & variable)
+- Project use: Find top-N recommendations in O(n) instead of O(n log n)
+
+
+3. Strings
+---------------------------------
+- Palindromes, anagrams
+- Character frequency counting
+- Two pointers on strings
+- String matching (naive, KMP concept)
+- Project use: Match user query to movie titles
+
+
+4. Hashing & Hash Tables
+---------------------------------
+- Hash function basics
+- Collision handling (chaining vs open addressing)
+- Python dict internals
+- set for O(1) membership
+- Project use: Map user_id -> ratings in O(1) lookup
+
+
+5. Stacks & Queues
+---------------------------------
+- LIFO vs FIFO
+- Python list as stack (append, pop)
+- collections.deque as queue (append, popleft)
+- Monotonic stack
+- Priority queue (heapq)
+- Project use: BFS for "users who liked this also liked..." recommendations
+
+
+6. Linked Lists
+---------------------------------
+- Singly, doubly, circular
+- Fast/slow pointers (Floyd's cycle detection)
+- Reversing linked list
+- Merge two sorted lists
+- Project use: Conceptual understanding for cache implementations (LRU)
+
+
+7. Recursion & Backtracking
+---------------------------------
+- Base case + recursive case
+- Recursion tree, call stack
+- Recursion depth limit (sys.setrecursionlimit)
+- Backtracking template (combinations, permutations, subsets)
+- Project use: Generate all movie genre combinations for filtering
+
+
+8. Trees & BST
+---------------------------------
+- Binary tree, BST properties
+- Tree traversals: inorder, preorder, postorder
+- BFS (level order) vs DFS
+- Validate BST
+- Project use: Hierarchical category trees (Action -> Sub-genres)
+
+
+9. Heaps / Priority Queue
+---------------------------------
+- Min-heap vs max-heap
+- heapq module operations
+- Top-K problems
+- Max-heap via negation trick
+- Project use: Find top 10 movies by predicted rating efficiently
+
+
+10. Graphs (Basics)
+---------------------------------
+- Adjacency list vs matrix
+- BFS traversal
+- DFS traversal
+- Connected components
+- Project use: User-movie bipartite graph for collaborative filtering
+
+
+11. Sorting Algorithms
+---------------------------------
+- Built-in sorted() and list.sort() (Timsort - O(n log n))
+- Merge sort (divide & conquer)
+- Quick sort (partitioning)
+- Stability in sorting
+- Custom sort keys with lambda
+- Project use: Sort recommendations by predicted score, then by popularity
+
+
+12. Dynamic Programming (Basics)
+---------------------------------
+- Memoization (top-down)
+- Tabulation (bottom-up)
+- Classic problems: Fibonacci, Climbing Stairs, Coin Change
+- 0/1 Knapsack concept
+- Project use: Cache similarity scores to avoid recomputation
+
+
+
+#################################################################################
+PHASE 4 - SEARCH ALGORITHMS
+#################################################################################
+
+1. Linear Search
+---------------------------------
+- O(n) - iterate through all elements
+- When to use: unsorted data
+- Project use: Search for a movie by exact title in small list
+
+
+2. Binary Search
+---------------------------------
+- O(log n) - sorted data only
+- bisect module
+- Variations: first occurrence, last occurrence, insert position
+- Search in rotated sorted array
+- Binary search on answer space
+- Project use: Find a movie in sorted catalog, search by ID
+
+
+3. Hash-based Search
+---------------------------------
+- O(1) average lookup
+- Dict / set membership
+- Project use: User lookup by ID - instant O(1)
+
+
+4. Tree Search
+---------------------------------
+- BST search O(log n) average, O(n) worst
+- DFS for path finding
+- BFS for shortest path
+- Project use: Find movies in category hierarchy
+
+
+5. Graph Search Algorithms
+---------------------------------
+- BFS - shortest path in unweighted graph
+- DFS - connectivity, cycle detection
+- Dijkstra's algorithm - shortest path with weights
+- A* search - heuristic-based
+- Project use: "Movies similar to this" graph traversal
+
+
+6. String Search
+---------------------------------
+- Naive pattern matching
+- KMP algorithm (Knuth-Morris-Pratt)
+- Rabin-Karp (rolling hash)
+- Regex with re module
+- Project use: Search movies by partial title match
+
+
+7. Search in Recommendation Systems
+---------------------------------
+- Nearest neighbor search (k-NN)
+- Cosine similarity search
+- Inverted index (like search engines)
+- Project use: Find users with similar taste (collaborative filtering core)
+
+
+
+#################################################################################
+PHASE 5 - SQL & DATABASES
+#################################################################################
+
+1. SQL Fundamentals
+---------------------------------
+- SELECT, FROM, WHERE
+- ORDER BY, LIMIT, OFFSET
+- DISTINCT, AS (aliases)
+- Comments -- and /* */
+- Project use: Query movies table for recommendations
+
+
+2. Filtering & Operators
+---------------------------------
+- =, <>, >, <, >=, <=
+- AND, OR, NOT
+- IN, NOT IN, BETWEEN, LIKE, ILIKE
+- IS NULL, IS NOT NULL
+- Pattern matching with % and _
+- Project use: Filter movies by genre, year, rating
+
+
+3. Aggregations & Grouping
+---------------------------------
+- COUNT(), SUM(), AVG(), MIN(), MAX()
+- GROUP BY
+- HAVING (filter after group)
+- DISTINCT with aggregates
+- Project use: Average rating per movie, total users per genre
+
+
+4. Joins (CRITICAL)
+---------------------------------
+- INNER JOIN - matching records only
+- LEFT JOIN - all left + matching right
+- RIGHT JOIN - all right + matching left
+- FULL OUTER JOIN - all records from both
+- CROSS JOIN - Cartesian product
+- Self-join (table joined to itself)
+- Join with multiple conditions
+- Project use: Join users, ratings, movies tables for full recommendation data
+
+
+5. Subqueries
+---------------------------------
+- Scalar subquery (returns single value)
+- IN subquery
+- EXISTS / NOT EXISTS
+- Correlated subqueries
+- CTEs (WITH clause) - modern, readable
+- Project use: Find users who rated similar to target user
+
+
+6. Window Functions (Senior-level)
+---------------------------------
+- ROW_NUMBER(), RANK(), DENSE_RANK()
+- LAG(), LEAD()
+- SUM() OVER(), AVG() OVER()
+- Partition by vs Order by
+- Project use: Rank movies by rating within each genre
+
+
+7. Indexing & Performance
+---------------------------------
+- B-tree index (default)
+- Composite indexes
+- Partial indexes
+- When NOT to index
+- EXPLAIN and EXPLAIN ANALYZE
+- Slow query optimization
+- Project use: Index user_id, movie_id for fast lookup
+
+
+8. Normalization & Schema Design
+---------------------------------
+- 1NF, 2NF, 3NF, BCNF
+- Denormalization (when and why)
+- Primary key, foreign key, unique constraint
+- ON DELETE CASCADE, ON DELETE SET NULL
+- Check constraints, not null constraints
+- Project use: Design movies, users, ratings, genres schema properly
+
+
+9. Transactions & ACID
+---------------------------------
+- BEGIN, COMMIT, ROLLBACK, SAVEPOINT
+- ACID properties (Atomicity, Consistency, Isolation, Durability)
+- Isolation levels: Read Uncommitted, Read Committed, Repeatable Read, Serializable
+- Deadlocks
+- Project use: Atomic rating submission (insert rating + update aggregates)
+
+
+10. Advanced SQL
+---------------------------------
+- UPSERT (INSERT ON CONFLICT UPDATE in Postgres)
+- Common Table Expressions (CTEs)
+- Recursive CTEs
+- Materialized views
+- Full-text search (tsvector, tsquery in Postgres)
+- JSON/JSONB columns in Postgres
+- Project use: Full-text search on movie titles, JSON columns for metadata
+
+
+
+#################################################################################
+PHASE 6 - DJANGO CORE
+#################################################################################
+
+1. Django Setup & Architecture
+---------------------------------
+- MVT (Model-View-Template) architecture
+- Project vs App
+- django-admin startproject, python manage.py startapp
+- settings.py anatomy
+- manage.py commands
+- INSTALLED_APPS, MIDDLEWARE, DATABASES
+- Project use: Create recommender project + api app
+
+
+2. Models & ORM Basics
+---------------------------------
+- models.Model base class
+- Field types: CharField, IntegerField, FloatField, DateTimeField, TextField,
+              BooleanField, EmailField, URLField, JSONField
+- Field options: null, blank, default, unique, choices, verbose_name, help_text
+- auto_now, auto_now_add for timestamps
+- __str__ method on models
+- Meta options: ordering, db_table, verbose_name, constraints
+- Project use: Movie, User, Rating, Genre models
+
+
+3. Model Relationships
+---------------------------------
+- ForeignKey (Many-to-One)
+- ManyToManyField
+- OneToOneField
+- related_name, related_query_name
+- On delete options: CASCADE, SET_NULL, PROTECT, DO_NOTHING
+- Reverse queries via related_name
+- Project use: Rating.user FK to User, Movie.genres M2M to Genre
+
+
+4. Migrations
+---------------------------------
+- makemigrations vs migrate
+- Migration files anatomy
+- python manage.py showmigrations
+- Rollback: migrate app 0003
+- migrate --plan
+- Custom data migrations
+- RunPython, RunSQL
+- Squashing migrations
+- Project use: Create and apply migrations for all models
+
+
+5. Django ORM QuerySets
+---------------------------------
+- Model.objects.all(), .filter(), .exclude()
+- Field lookups: __exact, __iexact, __contains, __icontains, __startswith,
+                __endswith, __gt, __lt, __gte, __lte, __in, __range, __isnull,
+                __date, __year
+- Chaining filters (lazy evaluation)
+- Q objects for complex OR/AND queries
+- F objects for referencing fields in queries
+- .distinct(), .order_by(), .reverse()
+- .values(), .values_list(), .only(), .defer()
+- .count(), .exists(), .first(), .last(), .get()
+- .create(), .update(), .delete(), .bulk_create(), .bulk_update()
+- .get_or_create(), .update_or_create()
+- Project use: Query movies by genre, year, rating range
+
+
+6. ORM Optimization (CRITICAL - Senior signal)
+---------------------------------
+- N+1 problem - what it is, how to detect
+- select_related() - for ForeignKey (SQL JOIN)
+- prefetch_related() - for M2M and reverse FK (separate query)
+- Prefetch object for custom prefetching
+- select_related('user__profile') - chained
+- .only() and .defer() for column-level optimization
+- bulk_create, bulk_update for batch ops
+- Iterator: .iterator(chunk_size=1000) for memory efficiency
+- Database-level aggregation: Sum, Avg, Count, Max, Min
+- .annotate() for computed fields
+- Project use: Fetch user + all their ratings in 2 queries, not N+1
+
+
+7. Views - Function-Based & Class-Based
+---------------------------------
+- Function-based views (FBV)
+- render(), HttpResponse, JsonResponse
+- request.GET, request.POST, request.body, request.headers
+- Class-based views (CBV)
+- View, TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+- as_view() method
+- Mixins: LoginRequiredMixin, ListView
+- Project use: movie_list, movie_detail, recommendations views
+
+
+8. URL Routing
+---------------------------------
+- urls.py - project-level and app-level
+- path(), re_path(), include()
+- URL converters: <int:pk>, <str:slug>, <uuid:uuid>, <slug:slug>
+- Named URLs: path('...', name='movie-detail')
+- reverse() and {% url %} template tag
+- Namespaces with app_name
+- Project use: RESTful URLs /api/movies/, /api/users/<id>/recommendations/
+
+
+9. Middleware
+---------------------------------
+- Request -> middleware chain -> view -> response -> middleware reverse
+- Built-in middleware: AuthenticationMiddleware, SessionMiddleware,
+                     CommonMiddleware, CsrfViewMiddleware
+- Custom middleware (two styles):
+  * Function-based: def simple_middleware(get_response):
+  * Class-based: __init__, __call__
+- process_request, process_view, process_response, process_exception
+- Project use: Custom middleware for request logging, rate limiting
+
+
+10. Templates
+---------------------------------
+- Template inheritance: {% extends %}, {% block %}
+- Tags: {% if %}, {% for %}, {% url %}, {% csrf_token %}, {% include %}, {% load %}
+- Filters: |lower, |upper, |date, |default, |length, |truncatewords
+- Context processors
+- Custom template tags and filters
+- Project use: Admin dashboard for managing recommendations (optional)
+
+
+11. Forms & Validation
+---------------------------------
+- forms.Form - unbound to model
+- forms.ModelForm - bound to model
+- Field validation: clean(), clean_<field>()
+- Form widgets
+- form.is_valid(), form.errors
+- CSRF protection in forms
+- Project use: User rating submission form
+
+
+12. Django Admin
+---------------------------------
+- admin.site.register(Model)
+- ModelAdmin customization: list_display, list_filter, search_fields,
+                          ordering, readonly_fields, raw_id_fields
+- Custom admin actions
+- Admin site theming
+- Project use: Manage movies, users, ratings from admin panel
+
+
+13. Authentication & Authorization
+---------------------------------
+- User model (built-in)
+- AbstractUser, AbstractBaseUser, custom user model (BEST PRACTICE)
+- authenticate(), login(), logout()
+- @login_required decorator
+- LoginRequiredMixin
+- Permissions: add, change, delete, view
+- Groups
+- has_perm(), has_perms()
+- Password hashing (PBKDF2, Argon2)
+- Project use: Custom User model with email login
+
+
+14. Signals
+---------------------------------
+- pre_save, post_save, pre_delete, post_delete
+- m2m_changed, request_started, request_finished
+- @receiver decorator
+- When to use signals (and when NOT to)
+- Project use: post_save on Rating -> update movie's avg_rating cache
+
+
+15. Caching
+---------------------------------
+- Cache backends: LocMemCache, RedisCache, MemcachedCache
+- @cache_page decorator
+- cache.get(), cache.set(), cache.delete()
+- Template fragment caching
+- Low-level cache API
+- Cache invalidation strategies
+- Project use: Cache top-10 recommendations per user (Redis)
+
+
+16. Sessions
+---------------------------------
+- Session engine: db, cache, file, signed cookies
+- request.session['key'] = value
+- Session expiry
+- Project use: Track anonymous user's recently viewed movies
+
+
+17. Security
+---------------------------------
+- CSRF protection
+- XSS prevention (Django auto-escapes templates)
+- SQL injection prevention (ORM parameterized queries)
+- Clickjacking (X-Frame-Options)
+- HTTPS redirection (SECURE_SSL_REDIRECT)
+- @require_POST, @require_http_methods
+- Security middleware
+- django-extensions for security audit
+- Project use: Production-grade security settings
+
+
+18. Custom Management Commands
+---------------------------------
+- python manage.py my_command
+- Command(BaseCommand) class
+- add_arguments(), handle()
+- Project use: Nightly job to precompute recommendation cache
+
+
+19. Logging & Error Handling
+---------------------------------
+- Django logging configuration
+- Loggers, handlers, formatters
+- logger.info(), logger.error(), logger.exception()
+- Sentry integration
+- Custom exception handling middleware
+- Project use: Log recommendation latency, errors
+
+
+20. Testing in Django
+---------------------------------
+- django.test.TestCase
+- Client for HTTP testing
+- pytest-django
+- Fixtures: setUp, setUpTestData, tearDown
+- @pytest.mark.django_db
+- Test models, views, APIs
+- Coverage measurement with coverage.py
+- Project use: 80%+ test coverage on recommendation endpoints
+
+
+
+#################################################################################
+PHASE 7 - DJANGO REST FRAMEWORK (DRF)
+#################################################################################
+
+1. DRF Setup
+---------------------------------
+- pip install djangorestframework
+- Add 'rest_framework' to INSTALLED_APPS
+- REST_FRAMEWORK settings dict
+- Project use: Enable DRF for recommendation API
+
+
+2. Serializers
+---------------------------------
+- Serializer class - manual field definition
+- ModelSerializer - auto-generated from model
+- Fields: CharField, IntegerField, FloatField, DateTimeField, ChoiceField,
+          PrimaryKeyRelatedField, SerializerMethodField
+- fields = '__all__' vs explicit fields
+- read_only_fields, extra_kwargs
+- Nested serializers
+- Serializer validation: validate(), validate_<field>()
+- .save() - create and update
+- SerializerMethodField for computed data
+- Project use: MovieSerializer, RatingSerializer, UserSerializer
+
+
+3. Views in DRF
+---------------------------------
+- APIView - manual control
+- GenericAPIView + mixins (ListModelMixin, CreateModelMixin, etc.)
+- ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
+- ListCreateAPIView, RetrieveUpdateDestroyAPIView
+- ViewSet - combines all CRUD
+- ModelViewSet - full CRUD
+- ReadOnlyModelViewSet - list + retrieve only
+- viewsets.py organization
+- Project use: MovieViewSet, RatingViewSet, RecommendationViewSet
+
+
+4. Routers
+---------------------------------
+- DefaultRouter, SimpleRouter
+- Auto-generates URL patterns from ViewSets
+- Custom actions with @action(detail=False) and @action(detail=True)
+- Project use: Auto-register all ViewSets
+
+
+5. Requests & Responses
+---------------------------------
+- DRF Request object - request.data (parsed body)
+- request.query_params (GET params)
+- request.user (authenticated user)
+- DRF Response object - content negotiation
+- Status codes: status.HTTP_200_OK, status.HTTP_201_CREATED, etc.
+- Project use: Standard JSON responses for all endpoints
+
+
+6. Authentication & Permissions
+---------------------------------
+- Authentication types:
+  * BasicAuthentication
+  * SessionAuthentication
+  * TokenAuthentication
+  * JWTAuthentication (SimpleJWT - recommended)
+- SimpleJWT setup:
+  * pip install djangorestframework-simplejwt
+  * TokenObtainPairView, TokenRefreshView
+  * Access token + refresh token flow
+  * Token rotation, blacklist
+- Permissions:
+  * AllowAny
+  * IsAuthenticated
+  * IsAdminUser
+  * IsAuthenticatedOrReadOnly
+  * Custom permission: class IsOwnerOrReadOnly(permissions.BasePermission)
+- @permission_classes decorator
+- Project use: JWT auth + "user can only see own ratings"
+
+
+7. Throttling & Rate Limiting
+---------------------------------
+- AnonRateThrottle, UserRateThrottle
+- Scoped throttles
+- Custom throttle classes
+- Project use: Limit unauthenticated users to 30 req/day
+
+
+8. Pagination
+---------------------------------
+- PageNumberPagination (default)
+- LimitOffsetPagination
+- CursorPagination (for large datasets, stable ordering)
+- Custom pagination class
+- Project use: Paginate movie list endpoint
+
+
+9. Filtering
+---------------------------------
+- django-filter library
+- DjangoFilterBackend
+- SearchFilter (?search=)
+- OrderingFilter (?ordering=-rating)
+- Custom filter backends
+- Filter fields, search fields, ordering fields
+- Project use: Filter movies by genre, year, rating
+
+
+10. Nested Serializers & Routes
+---------------------------------
+- Nested URL routes (/users/<id>/ratings/)
+- Nested serializers with depth
+- HyperlinkedModelSerializer for HATEOAS-style APIs
+- Project use: /api/users/<id>/recommendations/
+
+
+11. File Uploads & Media
+---------------------------------
+- FileField, ImageField in serializers
+- Media files configuration in settings
+- MEDIA_ROOT, MEDIA_URL
+- Handling multipart uploads
+- Project use: User profile picture upload
+
+
+12. Validation & Error Handling
+---------------------------------
+- Serializer validation
+- Custom validators
+- ValidationError exception
+- DRF exception handler
+- Custom exception handler
+- Standard error response format
+- Project use: Consistent error JSON across all endpoints
+
+
+13. API Documentation
+---------------------------------
+- drf-spectacular (modern, OpenAPI 3)
+- drf-yasg (Swagger 2.0)
+- Auto-generated API docs
+- SchemaView
+- Project use: Auto-docs at /api/docs/
+
+
+14. Testing DRF
+---------------------------------
+- APIClient
+- APITestCase
+- Force authentication in tests
+- Testing permissions
+- Project use: Test all endpoints with auth
+
+
+
+#################################################################################
+PHASE 8 - FASTAPI
+#################################################################################
+
+1. FastAPI Setup
+---------------------------------
+- pip install fastapi uvicorn
+- FastAPI() app instance
+- uvicorn main:app --reload
+- ASGI vs WSGI
+- Project use: Compare with Django for high-perf endpoints
+
+
+2. Path Operations
+---------------------------------
+- @app.get(), @app.post(), @app.put(), @app.delete()
+- Path parameters: /{item_id}
+- Query parameters: ?q=hello&limit=10
+- Path + query combined
+- Project use: Fast recommendation endpoint
+
+
+3. Request Bodies & Pydantic
+---------------------------------
+- BaseModel from Pydantic
+- Field types and validation
+- Field(...) for constraints
+- Nested models
+- Project use: Pydantic models for request validation
+
+
+4. Response Models
+---------------------------------
+- response_model=Item decorator param
+- Filtering output fields
+- Response with status code
+- Project use: Strict response schema enforcement
+
+
+5. Async/Await
+---------------------------------
+- async def vs def path operations
+- When async helps (I/O bound) and when it doesn't (CPU bound)
+- asyncio.gather() for parallel requests
+- Background tasks: BackgroundTasks
+- Project use: Async fetch from multiple data sources
+
+
+6. Dependency Injection
+---------------------------------
+- Depends() function
+- Reusable dependencies (auth, db session)
+- Sub-dependencies
+- Class-based dependencies
+- Project use: Inject current user, db session
+
+
+7. Database Integration
+---------------------------------
+- SQLAlchemy 2.0 async
+- databases library
+- Tortoise ORM
+- Raw asyncpg / psycopg3
+- Project use: Async PostgreSQL queries
+
+
+8. Authentication
+---------------------------------
+- OAuth2 with Password flow
+- JWT tokens with python-jose
+- OAuth2PasswordBearer
+- get_current_user dependency
+- Project use: JWT auth in FastAPI
+
+
+9. Middleware
+---------------------------------
+- @app.middleware("http")
+- CORS middleware
+- Custom middleware
+- Project use: Request logging, rate limiting
+
+
+10. Error Handling
+---------------------------------
+- HTTPException
+- Custom exception handlers
+- Validation errors auto-handled
+- Project use: Clean error responses
+
+
+11. Testing FastAPI
+---------------------------------
+- TestClient (from starlette)
+- pytest-asyncio
+- httpx for async testing
+- Project use: Unit tests for FastAPI endpoints
+
+
+12. FastAPI vs Django
+---------------------------------
+- When to use FastAPI (microservices, async I/O, ML inference)
+- When to use Django (batteries-included, admin, ORM, monolith)
+- Using together: Django monolith + FastAPI microservice for ML inference
+- Project use: Use Django for main app, FastAPI for ML recommendation inference
+
+
+
+#################################################################################
+PHASE 9 - PIPELINES & BACKGROUND TASKS
+#################################################################################
+
+1. Celery Basics
+---------------------------------
+- pip install celery
+- Celery architecture: broker + workers + backend
+- Brokers: Redis, RabbitMQ
+- Result backends: Redis, database
+- @shared_task decorator
+- task.delay(args) - async execution
+- task.apply_async() with options
+- Project use: Async job to recompute recommendations nightly
+
+
+2. Celery Configuration
+---------------------------------
+- CELERY_BROKER_URL, CELERY_RESULT_BACKEND
+- CELERY_TIMEZONE
+- Task serialization (JSON vs pickle)
+- Task routes
+- Queues
+- Project use: Configure Celery with Redis
+
+
+3. Celery Beat (Periodic Tasks)
+---------------------------------
+- CELERY_BEAT_SCHEDULE
+- Crontab schedules: crontab(minute=0, hour=2)
+- Periodic tasks vs cron jobs
+- Project use: Nightly recommendation refresh at 2 AM
+
+
+4. Celery Advanced
+---------------------------------
+- Task chains: chain(t1.s(), t2.s())
+- Task groups: group(t1.s(), t2.s())
+- Chords: chord(header, callback)
+- Task retry: self.retry(exc=exc, countdown=60)
+- Task states: PENDING, STARTED, SUCCESS, FAILURE, RETRY
+- Task timeouts, rate limits
+- Project use: Pipeline: fetch data -> train model -> update cache
+
+
+5. Redis Basics
+---------------------------------
+- pip install redis
+- Redis data types: strings, lists, sets, hashes, sorted sets
+- Basic commands: GET, SET, DEL, EXPIRE, TTL
+- Pub/Sub
+- Project use: Cache layer + Celery broker
+
+
+6. Django Caching with Redis
+---------------------------------
+- django-redis package
+- CACHES = {'default': {'BACKEND': 'django_redis.cache.RedisCache', ...}}
+- cache.set(), cache.get(), cache.delete()
+- Cache invalidation patterns
+- Project use: Cache recommendation results for 1 hour
+
+
+7. Airflow (Concept-level)
+---------------------------------
+- DAGs (Directed Acyclic Graphs)
+- Operators, tasks, dependencies
+- airflow scheduler, airflow webserver
+- When to use Airflow vs Celery
+- Project use: Know conceptually, mention in interview
+
+
+8. Message Queues Concept
+---------------------------------
+- Producer -> Queue -> Consumer
+- At-least-once vs at-most-once delivery
+- RabbitMQ vs Redis vs Kafka
+- Project use: Concept-level knowledge for interviews
+
+
+9. Background Tasks in FastAPI
+---------------------------------
+- BackgroundTasks (simple, in-process)
+- asyncio.create_task()
+- When to use Celery vs FastAPI BackgroundTasks
+- Project use: Send email notification when recommendation is ready
+
+
+10. Monitoring & Observability
+---------------------------------
+- Flower (Celery monitoring)
+- Prometheus + Grafana (metrics)
+- Sentry (error tracking)
+- Structured logging with structlog
+- Project use: Add Sentry, monitor Celery with Flower
+
+
+
+#################################################################################
+PHASE 10 - GIT & GITHUB
+#################################################################################
+
+1. Git Fundamentals
+---------------------------------
+- What is version control?
+- Git vs GitHub
+- git init
+- git config (user.name, user.email)
+- Project use: Initialize repo for recommendation API
+
+
+2. Staging & Committing
+---------------------------------
+- git status
+- git add <file>, git add ., git add -p
+- git commit -m "message"
+- git commit --amend
+- Commit message conventions (Conventional Commits)
+- Project use: Commit initial project setup
+
+
+3. History & Inspection
+---------------------------------
+- git log, git log --oneline, git log --graph
+- git show <commit>
+- git diff, git diff --staged, git diff HEAD~1
+- git blame <file>
+- Project use: Track changes over time
+
+
+4. Branching & Merging
+---------------------------------
+- git branch, git branch <name>
+- git checkout <branch>, git checkout -b <branch>
+- git switch (modern alternative)
+- git merge <branch> - fast-forward vs 3-way merge
+- git branch -d <branch> (safe delete), -D (force)
+- Project use: Feature branches for each new endpoint
+
+
+5. Remote Repositories
+---------------------------------
+- git remote add origin <url>
+- git push -u origin main
+- git pull, git fetch
+- git clone <url>
+- git remote -v
+- Project use: Push project to GitHub
+
+
+6. Rebasing
+---------------------------------
+- git rebase <branch>
+- Interactive rebase: git rebase -i HEAD~3
+- Squash, pick, reword, edit
+- When to rebase vs merge
+- WARNING: Never rebase shared branches
+- Project use: Clean commit history before PR
+
+
+7. Merge Conflicts
+---------------------------------
+- What causes conflicts
+- How to resolve manually
+- git mergetool
+- Abort: git merge --abort, git rebase --abort
+- Project use: Resolve conflicts when merging features
+
+
+8. Stashing
+---------------------------------
+- git stash, git stash save "name"
+- git stash list
+- git stash pop, git stash apply
+- git stash drop
+- Project use: Save WIP when switching branches
+
+
+9. Tags & Releases
+---------------------------------
+- git tag v1.0.0
+- git tag -a v1.0.0 -m "Release message"
+- git push --tags
+- Semantic versioning (SemVer): MAJOR.MINOR.PATCH
+- Project use: Tag v1.0.0 for first production release
+
+
+10. .gitignore
+---------------------------------
+- Common patterns to ignore
+- Python-specific: __pycache__/, *.pyc, venv/
+- Django-specific: db.sqlite3, media/, .env
+- GitHub's .gitignore templates
+- git rm --cached <file> to untrack
+- Project use: Proper .gitignore for Django project
+
+
+11. Pull Requests Workflow
+---------------------------------
+- Fork -> clone -> branch -> commit -> push -> PR
+- PR template
+- Code review etiquette
+- Resolving review comments
+- Squash and merge vs merge commit vs rebase merge
+- Project use: Real PR workflow for every feature
+
+
+12. GitHub Features
+---------------------------------
+- Issues, Projects (Kanban), Wiki
+- GitHub Actions (CI/CD basics)
+- Branch protection rules
+- Code owners
+- GitHub Pages
+- Project use: Issue tracking + CI workflow
+
+
+13. Git Best Practices
+---------------------------------
+- Small, atomic commits
+- Descriptive commit messages
+- Feature branches only
+- Pull before push
+- Never commit secrets (.env)
+- git-secrets or trufflehog for secret scanning
+- Project use: Professional Git habits
+
+
+14. GitHub Actions (CI/CD)
+---------------------------------
+- Workflow YAML structure
+- Triggers: push, pull_request, schedule
+- Jobs, steps, runners
+- Matrix builds
+- Caching dependencies
+- Deploy on merge to main
+- Project use: Auto-run tests on every PR
+
+
+15. Advanced Git
+---------------------------------
+- git cherry-pick <commit>
+- git reflog - recover lost commits
+- git bisect - find which commit broke something
+- git reset --soft, --mixed, --hard
+- git revert <commit> (safe undo)
+- Project use: Recover from mistakes professionally
+
+
+
+#################################################################################
+PHASE 11 - PRODUCTION & DEPLOYMENT
+#################################################################################
+
+1. Environment Management
+---------------------------------
+- python-dotenv for .env files
+- python-decouple for separating config from code
+- os.environ.get()
+- .env.example for documentation
+- Never commit .env
+- Project use: Store DB credentials, API keys, secrets
+
+
+2. Docker Basics
+---------------------------------
+- pip install docker (or install Docker Desktop)
+- Dockerfile anatomy:
+  * FROM python:3.12-slim
+  * WORKDIR /app
+  * COPY requirements.txt .
+  * RUN pip install -r requirements.txt
+  * COPY . .
+  * CMD ["gunicorn", "config.wsgi", "--bind", "0.0.0.0:8000"]
+- .dockerignore
+- docker build -t recapi .
+- docker run -p 8000:8000 recapi
+- Project use: Dockerize Django + FastAPI
+
+
+3. Docker Compose
+---------------------------------
+- docker-compose.yml for multi-container:
+  * Django app
+  * PostgreSQL
+  * Redis
+  * Celery worker
+  * Celery beat
+- docker-compose up, docker-compose down
+- Volumes for persistent data
+- Networks
+- Environment variables in compose
+- Project use: Full local dev environment
+
+
+4. Gunicorn (Production Server)
+---------------------------------
+- pip install gunicorn
+- gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3
+- Worker types: sync, async (uvicorn.workers.UvicornWorker), gevent
+- Worker count formula: (2 x CPU cores) + 1
+- --threads, --timeout, --max-requests (for memory leak mitigation)
+- Project use: Production Django server
+
+
+5. Nginx (Reverse Proxy)
+---------------------------------
+- Nginx in front of Gunicorn
+- Serve static files and media directly
+- SSL termination
+- Load balancing
+- Rate limiting at Nginx level
+- Basic Nginx config for Django
+- Project use: Nginx + Gunicorn + Django stack
+
+
+6. PostgreSQL in Production
+---------------------------------
+- psycopg (v3) or psycopg2-binary
+- Connection pooling with pgbouncer
+- DATABASES config for prod
+- SSL connections
+- Read replicas conceptually
+- Backup strategies (pg_dump)
+- Project use: Production database
+
+
+7. Static & Media Files
+---------------------------------
+- collectstatic for production
+- WhiteNoise for serving static files
+- AWS S3 / Cloudinary for media storage
+- django-storages package
+- Project use: Serve static via WhiteNoise, media via S3
+
+
+8. HTTPS & Security
+---------------------------------
+- Let's Encrypt + Certbot
+- SECURE_SSL_REDIRECT = True
+- SESSION_COOKIE_SECURE = True
+- CSRF_COOKIE_SECURE = True
+- SECURE_HSTS_SECONDS
+- Security headers
+- Project use: HTTPS-only production site
+
+
+9. Logging & Monitoring
+---------------------------------
+- Django logging config
+- Log to file, console, external service
+- Sentry SDK integration
+- sentry_sdk.init(dsn="...")
+- Performance monitoring
+- Project use: Sentry for error tracking
+
+
+10. CI/CD Pipeline
+---------------------------------
+- GitHub Actions workflow:
+  * Lint (flake8, black, isort)
+  * Test (pytest)
+  * Build Docker image
+  * Push to registry
+  * Deploy to server
+- Secrets management in GitHub
+- Project use: Auto-deploy on push to main
+
+
+11. Deployment Platforms
+---------------------------------
+- Render (easy, free tier) - recommended for project
+- Railway (similar to Render)
+- PythonAnywhere (Django-friendly)
+- AWS EC2 (more control, more work)
+- DigitalOcean Droplet
+- Heroku (no longer free tier)
+- Project use: Deploy on Render free tier
+
+
+12. Production Checklist
+---------------------------------
+- DEBUG = False
+- ALLOWED_HOSTS set
+- SECRET_KEY from env
+- HTTPS enabled
+- Database connection pooling
+- Static files collected
+- Migrations run
+- Superuser created
+- Celery workers running
+- Monitoring active
+- Backups configured
+- Project use: Production-ready checklist
+
+
+
+#################################################################################
+FINAL PROJECT ARCHITECTURE YOU'LL BUILD
+#################################################################################
+
+recommendation-api/
+|
+|-- django_app/                    <-- Main monolith (Django + DRF)
+|   |-- accounts/                  <-- Custom user model
+|   |-- catalog/                   <-- Movie, Genre models
+|   |-- ratings/                   <-- User ratings
+|   |-- recommender/               <-- Recommendation endpoints
+|   `-- config/                   <-- settings, urls, wsgi
+|
+|-- fastapi_ml/                    <-- ML inference microservice
+|   `-- main.py                    <-- Async recommendation endpoint
+|
+|-- celery_tasks/                  <-- Background jobs
+|   |-- tasks.py                   <-- Recompute recommendations
+|   `-- beat_schedule.py          <-- Nightly cron
+|
+|-- docker-compose.yml             <-- Postgres + Redis + Django + Celery
+|-- Dockerfile
+|-- .env.example
+|-- .gitignore
+|-- requirements.txt
+|-- README.md
+`-- .github/workflows/ci.yml       <-- GitHub Actions CI
+
+
+================================================================================
+                            END OF ROADMAP
+================================================================================
